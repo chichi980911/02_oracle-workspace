@@ -274,7 +274,7 @@ WHERE HIRE_DATE BETWEEN '90/01/01' AND '01/01/10';
         비교대상 컬럼 LIKE '%문자%' =>비교대상의 컬럼값 내 문자가 "포함" 되는것을 조회 (키워드 조회)
         
     >> '_' :1글자 이상 
-    EX) 비교대상컬럼 LIKE '_문자' => 비교대상의 컬럼값의 문자앞에 무조건 한글자만 오는 경우조회
+    EX) 비교대상컬럼 LIKE '_문자' => 비교대상의 컬럼값의 문자앞에 무조건 한글자만 오는 경우 조회
         비교대상컬럼 LIKE '_문자'  => 비교대상의 컬럼값의 문자앞에 무조건 두글자가 올 경우 조회
         비교대상컬럼 LIKE '_문자_' => 비교대상의 컬럼값에 문자 앞과 문자 뒤에 무조건 한글자씩 올 경우
 */
@@ -334,6 +334,10 @@ SELECT EMP_NAME, PHONE
 FROM EMPLOYEE
 WHERE NOT PHONE LIKE '010%';
 
+SELECT EMP_NAME, PHONE
+FROM EMPLOYEE
+WHERE NOT PHONE LIKE '010%';
+
 --3. EMPLOYEE에서 이름에 '하' 가 포함되어 있고 급여가 240만원 이상인 사원들의 사원명,급여 조회
 
 SELECT EMP_NAME, SALARY
@@ -343,7 +347,7 @@ WHERE EMP_NAME LIKE '%하%' AND SALARY > 2400000;
 --4. DEPARTMENT에서 해외 영업부인 부서들의 코드와 부서명을 조회
 SELECT DEPT_ID,DEPT_TITLE
 FROM DEPARTMENT
-WHERE DEPT_TITLE LIKE '해외영업%' ESCAPE '$' ; 
+WHERE DEPT_TITLE LIKE '해외영업%'  ; 
 
 
 
