@@ -248,7 +248,7 @@ SELECT FLOOR(123.752) FROM DUAL; --5미만이 아니여도 무조건 그냥 버린다 (위치지정
     
 */
 SELECT TRUNC(123.456) FROM DUAL; --위치지정하지 않으면 FLOOR(버림)이랑 동일
-SELECT TRUNC(123.456,3) FROM DUAL;
+SELECT TRUNC(123.456,1) FROM DUAL;
 
 ----------------------------------날짜처리함수 --------------------------------
 
@@ -262,7 +262,8 @@ SELECT SYSDATE FROM DUAL;
 --* MONTHS_BETWEEN(DATE1,DATE2): 두 날짜 사이의 개월 수 = > 내부적으로 DATE1과 DATE2 후 나누기 30,31 진행된다.
 --=>결과값 NUMBER 타입
 
-SELECT EMP_NAME, HIRE_DATE, FLOOR(SYSDATE - HIRE_DATE), CEIL(MONTHS_BETWEEN(SYSDATE,HIRE_DATE)) 
+SELECT EMP_NAME, HIRE_DATE, FLOOR(SYSDATE - HIRE_DATE), 
+CEIL(MONTHS_BETWEEN(SYSDATE,HIRE_DATE)) 
 FROM EMPLOYEE;
 
 -- *ADD_MONTHS(DATE,NUMBER) : 특정날짜에 해당 숫자만큼의 개월수를 더해서 날짜를 리턴
