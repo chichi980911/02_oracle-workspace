@@ -71,10 +71,14 @@ SELECT SYSDATE
 FROM DUAL;
 --10. EMP테이블에서 사번, 사원명, 급여 조회
 --(단, 급여는 100단위까지의 값만 출력 처리하고 급여 기준 내림차순 정렬)
-SELECT EMPNO,ENAME,
+SELECT EMPNO,ENAME,FLOOR(SAL / 100)*10 AS "급여"
 FROM EMP;
 
 --11. EMP테이블에서 사원번호가 홀수인 사원들을 조회
+SELECT EMPNO
+FROM EMP
+WHERE MOD(EMPNO,2) =1;
+
 --12. EMP테이블에서 사원명, 입사일 조회 (단, 입사일은 년도와 월을 분리 추출해서 출력)
 --13. EMP테이블에서 9월에 입사한 직원의 정보 조회
 --14. EMP테이블에서 81년도에 입사한 직원 조회
