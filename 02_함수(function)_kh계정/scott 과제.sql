@@ -80,12 +80,51 @@ FROM EMP
 WHERE MOD(EMPNO,2) =1;
 
 --12. EMP테이블에서 사원명, 입사일 조회 (단, 입사일은 년도와 월을 분리 추출해서 출력)
+
+SELECT ENAME,
+   EXTRACT(YEAR FROM HIREDATE), 
+    EXTRACT(MONTH FROM HIREDATE)
+FROM EMP; 
+
+
 --13. EMP테이블에서 9월에 입사한 직원의 정보 조회
+
+SELECT *
+FROM EMP
+WHERE EXTRACT(MONTH FROM HIREDATE) = '09';
+
 --14. EMP테이블에서 81년도에 입사한 직원 조회
+
+SELECT * 
+FROM EMP 
+WHERE EXTRACT(YEAR FROM HIREDATE) = '1981';
+
 --15. EMP테이블에서 이름이 'E'로 끝나는 직원 조회
+SELECT *
+FROM EMP 
+WHERE ENAME LIKE '%E';
+
+
 --16. EMP테이블에서 이름의 세 번째 글자가 'R'인 직원의 정보 조회
 --16-1. LIKE 사용
+SELECT *
+FROM EMP
+WHERE ENAME LIKE '__R%';
 --16-2. SUBSTR() 함수 사용
+SELECT *
+FROM EMP
+WHERE SUBSTR(ENAME,3,1) = 'R';
 --17. EMP테이블에서 사번, 사원명, 입사일, 입사일로부터 40년 되는 날짜 조회
+SELECT EMPNO,ENAME,HIREDATE,ADD_MONTHS(HIREDATE,480)
+FROM EMP;
 --18. EMP테이블에서 입사일로부터 38년 이상 근무한 직원의 정보 조회
+SELECT *
+FROM EMP;
+
+SELECT *
+FROM EMP
+WHERE HIREDATE <= ADD_MONTHS(SYSDATE,-12*38);
 --19. 오늘 날짜에서 년도만 추출
+
+SELECT EXTRACT(YEAR FROM SYSDATE)
+FROM DUAL;
