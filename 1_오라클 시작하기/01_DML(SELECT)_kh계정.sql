@@ -14,6 +14,8 @@
 SELECT *
 FROM EMPLOYEE;
 
+select *
+from employee;
 --EMPLOYEE 테이블의 사번 , 이름 ,급여조회
 
 SELECT EMP_NO,EMP_NAME,SALARY
@@ -223,7 +225,7 @@ WHERE DEPT_CODE = 'D9' AND SALARY > 5000000;
 --부서코드가 'D6' 이거나 급여가 300만원 이상인 사원들의 사원명, 부서코드, 급여 조회
 SELECT EMP_NAME,DEPT_CODE,SALARY
 FROM EMPLOYEE
-WHERE DEPT_CODE = 'D6' OR SALARY > 3000000;
+WHERE DEPT_CODE = 'D6' OR SALARY >= 3000000;
 
 --급여가 350만원 이상 600만원 이하를 받는 사원들의 사원명, 사번, 급여 조회
 SELECT EMP_NAME, EMP_ID, SALARY 
