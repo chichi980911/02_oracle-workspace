@@ -90,6 +90,8 @@ FROM EMPLOYEE
 GROUP BY DEPT_CODE
 HAVING COUNT(BONUS) = 0;
 
+SELECT BONUS
+FROM EMPLOYEE;
 -------------------------------------------------------------------------------
 /*
     <SELECT¹® ½ÌÇà ¼ø¼­>
