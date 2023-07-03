@@ -398,3 +398,224 @@ INSERT INTO MEM
 VALUES(3,'USER03','PASS03','이승우','남',NULL,NULL,40);
 --integrity constraint (DDL.SYS_C007153) violated - parent key not found
 
+INSERT INTO MEM
+VALUES(4,'USER04','PASS04','안정환',NULL,NULL,NULL,10);
+SELECT * FROM MEM;
+--MEM_GRADE (부모테이블) MEM(자식테이블)
+-- 이때 부모테이블 (MEM_GRADE)에서 값을 삭제할 경우 어떤 문제가 발생한다.
+-- 데이터 삭제 : DELETE FROM 테이블명 WHERE 조건,
+
+DELETE FROM MEM_GRADE
+WHERE GRADE_CODE = 10;
+--integrity constraint (DDL.SYS_C007153) violated - child record found
+--자식테이블 (MEM)에 10이라는 값을 사용하고 있기 때문에 삭제가 되지 않는다.
+
+DELETE FROM MEM_GRADE
+WHERE GRADE_CODE = 30;
+-->자식테이블 (MEM에) 30이라는 값을 사용하고 있지 않기 떄문에 삭제가 잘 된다
+
+--자식테이블에 이미 사용하고 있는 값이 있을 경우
+--부모테이블로부터 무조건 삭제가 안되게 하는 삭제제한 옵션이 걸려있다.
+
+SELECT  * FROM MEM_GRADE;
+
+ROLLBACK;
+
+-------------------------------------------------------------------------------
+/*
+    자식테이블 생성시 외래키 제약조건 부여할 떄 삭제 옵션 지정가능 
+    * 삭제옵션: 부모테이블의 데이터 삭제시 그 데이터를 사용하고 있는 
+    자식들의 테이블의 값을 어떻게 처리할건지
+    
+    1.ON DELETE RESTRICTED (기본값)
+        삭제제한 옵션으로 , 자식데이터로 쓰이는 부모데이터는 삭제 아예 안되게끔
+    2.ON DELETE SET NULL 
+        부모데이터 삭제시 해당 데이터를 쓰고 있는 자식데이터의 값을 NULL로 변경
+    3.ON DELETE CASCADE
+        부모데이터 삭제시 해당 데이터를 쓰고 있는 자식데이터도 같이 삭제시킴
+*/
+
+DROP TABLE MEM;
+
+
+--
+CREATE TABLE MEM(
+    MEM_NO NUMBER PRIMARY KEY ,
+    MEM_ID VARCHAR2 (20) NOT NULL UNIQUE,
+    MEM_PW VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남','여')), 
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50),
+    GRADE_ID NUMBER REFERENCES MEM_GRADE(GRADE_CODE) ON DELETE SET NULL
+    );
+    
+    SELECT * FROM MEM;
+    
+INSERT INTO MEM
+VALUES(1,'USER01','PASS01','손흥민','남',NULL,NULL,NULL);
+
+INSERT INTO MEM
+VALUES(2,'USER02','PASS02','이강인','남',NULL,NULL,10);
+
+INSERT INTO MEM
+VALUES(3,'USER03','PASS03','이승우','남',NULL,NULL,20);
+
+INSERT INTO MEM
+VALUES(4,'USER04','PASS04','안정환',NULL,NULL,NULL,30);
+
+COMMIT;
+
+DELETE FROM MEM_GRADE
+WHERE GRADE_CODE =10;
+--잘 삭제된다 
+
+SELECT * FROM MEM;
+
+ROLLBACK;
+
+DROP TABLE MEM;
+
+CREATE TABLE MEM(
+    MEM_NO NUMBER PRIMARY KEY ,
+    MEM_ID VARCHAR2 (20) NOT NULL UNIQUE,
+    MEM_PW VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남','여')), 
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50),
+    GRADE_ID NUMBER REFERENCES MEM_GRADE(GRADE_CODE) ON DELETE  CASCADE
+);
+
+INSERT INTO MEM
+VALUES(1,'USER01','PASS01','손흥민','남',NULL,NULL,NULL);
+
+INSERT INTO MEM
+VALUES(2,'USER02','PASS02','이강인','남',NULL,NULL,10);
+
+INSERT INTO MEM
+VALUES(3,'USER03','PASS03','이승우','남',NULL,NULL,20);
+
+INSERT INTO MEM
+VALUES(4,'USER04','PASS04','안정환',NULL,NULL,NULL,30);
+
+SELECT * FROM MEM;
+
+DELETE FROM MEM_GRADE
+WHERE GRADE_CODE = 10;
+
+SELECT * FROM MEM;
+SELECT * FROM MEM_GRADE;
+
+/*
+    <DEFAULT 기본값 > < **제약조건 아님**>
+    컬럼을 설정하지 않고 INSERT 시 BULL이 아닌 기본값을 INSERT 하고자 할 떄 세팅해 둘 수 있는값
+    
+*/
+
+DROP TABLE MEMBER;
+
+CREATE TABLE MEMBER(
+    MEM_NO NUMBER PRIMARY KEY,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    MEM_ACE NUMBER,
+    HOBBY VARCHAR2(20) DEFAULT '없음',
+    ENROLL_DATE DATE DEFAULT SYSDATE
+);
+  
+  SELECT * FROM MEMBER;
+  
+  INSERT INTO MEMBER
+  VALUES(1,'손흥민',20,'축구','22/1/01');
+  
+  INSERT INTO MEMBER
+  VALUES(2,'이강인',NULL,NULL,NULL);
+  
+  INSERT INTO MEMBER
+  VALUES(3,'안정환',NULL,DEFAULT,DEFAULT);
+  
+  INSERT INTO MEMBER
+  VALUES(4,'손흥민',20,'축구','22/1/01'); -- 내가 설정한 디폴트 값으로 들어간다
+  
+  --INSERT INTO 테이블명  (컬럼명 ,컬럼명 ) VALUES (값1,값2)
+  --NOT NULL인건 꼭 써야한다
+  
+  INSERT INTO MEMBER
+(MEM_NO,MEM_NAME)VALUES (4,'안정환');
+--선택되지 않은 컬럼 기본적으로 NULL이 들어간다.
+--단 해당 커럼에 DEFAULT값이 있을 경우 NULL이 아닌 DEFAULT값이 들어간다.
+
+
+------------------------------------------------------------------------------
+/*
+ ==============================KH 계정==========================
+ <SUBQUETY>를 이용한 테이블 생성
+ 테이블 복사 뜨는 개념
+
+    [표현식]
+    CERATE TABEL 테이블명
+    AS 서브쿼리 ;
+
+*/
+  --EMPLOYEE 테이블을 복제한 새로운 테이블 생성
+  CREATE TABLE EMPLOYEE_COPY 
+  AS SELECT * FROM EMPLOYEE;
+  
+  DROP TABLE EMPLOYEE_CAPF2;
+  
+  SELECT * FROM EMPLOYEE_COPY;
+-->>컬럼, 데이터 값, 제약조건 같은 경우 NOT NULL만 복사된다.
+
+CREATE TABLE EMPLOYEE_COPE2
+AS SELECT EMP_ID, EMP_NAME, BONUS
+FROM EMPLOYEE --테이블 구조만 가져온다
+WHERE 1 = 0;
+
+SELECT * FROM EMPLOYEE_COPE2;
+
+CREATE TABLE EMPLOYEE_COPY3
+AS SELECT EMP_ID,EMP_NAME,SALARY,SALARY * 12  AS "연봉"
+FROM EMPLOYEE;
+--must name this expression with a column alias 
+--> alias : 별칭 
+-->서브쿼리 SELECT 절에 산술식 또는 함수식 기술한 경우 반드시 별칭을 지정해야함
+SELECT * FROM EMPLOYEE_COPY3;
+
+DROP TABLE EMPLOYEE_COPY3;
+
+--------------------------------------------------------------------------------
+/*
+    *테이블 전부 생성 후 뒤늦게 제약조건을 추가 
+    ALTER TABLE 테이블명 변경할 내용,
+    
+    -PRIMARY KEY : ALTER TABLE 테이블명 ADD PRIMARY KEY (컬럼명);
+    -FROEION KEY : ALETER TABLE 테이블명 ADD FOREION KEY (컬럼명) REFERENCES 참조할 테이블명[(참조할 컬럼명)]; 
+    -UBIQUE : ALTER TABLE 테이블명 ADD UNIQUE(컬럼명);
+    -CHECK : ALTER TABLE 테이블명 ADD CHECK(컬럼에 대한 조건식)
+    -NOT NULL :ALTER TABLE 테이블명 MODIFY 컬럼명 NOT NULL; **약간 특이함
+    
+*/
+
+--서브쿼리를 이용해서 복제한 테이블 NN 제약조건 뺴고 복제가안됨
+--EMPLOYEE_COPY 테이블 PRIMARY KEY 제약조건 추가 (EMP_ID)
+
+ALTER TABLE EMPLOYEE_COPY ADD PRIMARY KEY(EMP_ID);
+
+
+--EMPLOYEE 테이블에 DEPT_CODE 에 외래키 제약조건 추가 (참조하는 테이블(부모) : DEPARTMENT(DEPT_ID))
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY (DEPT_CODE) REFERENCES DEPARTMENT; -- 생략하면 부모테이블의 PK 로 자동배정함
+
+
+--EMPLOYEE 테이블에 JOB_CODE 에 외래키 제약조건 추가 (JOB 참조)
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY(JOB_CODE) REFERENCES JOB(JOB_CODE);
+
+
+--EMPLOYEE 테이블에 SAL_LEVEL에 외래키 제약조건 추가 (SAL_GRADE 참조)
+ALTER TABLE EMPLOYEE ADD FOREIGN KEY(SAL_LEVEL) REFERENCES SAL_GRADE(SAL_LEVEL);
+
+
+--DEPARTMENT 테이블에 LOCATION_ID 에 왜래키 조약조건 추가 (LOCATION 참조)
+ALTER TABLE DEPARTMENT ADD FOREIGN KEY(LOCATION_ID) REFERENCES LOCATION(LOCAL_CODE);
+
+SELECT * FROM DEPARTMENT;
+INSERT INTO DEPARTMENT VALUES('D10','서비스부','L6');
