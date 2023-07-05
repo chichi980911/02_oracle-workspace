@@ -22,7 +22,6 @@
         테이블에 모든 컬럼에 대한 값을 직접 제시해서 한 행 INSERT 하고자 할 떄 사용
         컬럼순번을 지켜서 VALUES에 값을 나열해야됨!
         
-        
         부족하게 값을 제시했을 경우 not enough values 에러발생 
         값을 더 많이 제시했을 경우 too many values 에러발생
         
