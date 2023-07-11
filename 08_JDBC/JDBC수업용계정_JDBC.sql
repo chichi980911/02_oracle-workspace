@@ -9,3 +9,30 @@ select * FROM MEMBER WHERE USERNAME = '';
 
 DELETE FROM MEMBER
 WHERE USERNAME = '';
+
+DELETE  FROM MEMBER 
+WHERE USERID = 'bbb';
+
+SELECT * FROM MEMBER
+WHERE USERNAME LIKE '%관%';
+
+commit;
+
+
+
+UPDATE MEMBER 
+    SET USERPWD = '',
+        EMAIL = '',
+        PHONE = '',
+        ADDRESS = ''
+WHERE USERID = '';
+
+
+--4 회원 이름으로 검색 요청시 실행될 sql 문
+SELECT * FROM MEMBER WHERE USERNAME LIKE '%?%';
+
+--5. 회원 정보 변경 요청시 실행될 SQL 문
+UPDATE MEMBER SET USERPWD = ?, EMAIL =?, PHONE = ?, ADDRESS = ? WHERE USERID = ?;
+
+--6. 회원 탈퇴 요청시 실행될 SQL 문
+DELETE FROM MEMBER WHERE USERID = ?; 
