@@ -13,3 +13,7 @@ INSERT INTO PRODUCT VALUES('PC_ibm','ibmPC',750000,'window8',5);
 commit;
 select * from product;
 COMMIT;
+	
+    SELECT *
+	FROM PRODUCT
+	WHERE P_NAME like '%»ï%';
